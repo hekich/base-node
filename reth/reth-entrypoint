@@ -38,26 +38,28 @@ echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 exec $BINARY node \
   -vvv \
   --datadir="$RETH_DATA_DIR" \
+  --full \
   --log.stdout.format json \
   --ws \
   --ws.origins="*" \
   --ws.addr=0.0.0.0 \
   --ws.port="$WS_PORT" \
-  --ws.api=debug,eth,net,txpool \
+  --ws.api=web3,debug,eth,net,txpool \
   --http \
   --http.corsdomain="*" \
   --http.addr=0.0.0.0 \
   --http.port="$RPC_PORT" \
-  --http.api=debug,eth,net,txpool,miner \
+  --http.api=web3,debug,eth,net,txpool,miner \
   --ipcpath="$IPC_PATH" \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$OP_NODE_L2_ENGINE_AUTH" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
-  --max-outbound-peers=100 \
+  --max-outbound-peers=30 \
   --chain "$RETH_CHAIN" \
   --rollup.sequencer-http=$RETH_SEQUENCER_HTTP \
   --rollup.disable-tx-pool-gossip \
+  --rollup.discovery.v4 \
   --discovery.port="$DISCOVERY_PORT" \
   --port="$P2P_PORT" \
   $ADDITIONAL_ARGS
