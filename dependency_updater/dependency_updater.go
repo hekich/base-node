@@ -143,7 +143,7 @@ func createCommitMessage(updatedDependencies []VersionUpdateInfo, repoPath strin
 	}
 	commitDescription = strings.TrimSuffix(commitDescription, " ")
 	commitTitle += strings.Join(repos, ", ")
-	
+
 	if githubAction {
 		err := writeToGithubOutput(commitTitle, commitDescription, repoPath)
 		if err != nil {
@@ -311,6 +311,10 @@ func createVersionsEnv(repoPath string, dependencies Dependencies) error {
 		repoUrl := generateGithubRepoUrl(dependencies, dependency) + ".git"
 
 		dependencyPrefix := strings.ToUpper(dependency)
+
+		if dependencies[dependency].Tracking == "branch" {
+			dependencies[dependency].Tag = dependencies[dependency].Branch
+		}
 
 		envLines = append(envLines, fmt.Sprintf("export %s_%s=%s",
 			dependencyPrefix, "TAG", dependencies[dependency].Tag))
