@@ -12,13 +12,13 @@ P2P_PORT="${P2P_PORT:-30303}"
 ADDITIONAL_ARGS=""
 NODE_TYPE="${NODE_TYPE:-vanilla}"
 
-if [[ -z "$RETH_CHAIN" ]]; then
+if [[ -z "${RETH_CHAIN:-}" ]]; then
     echo "expected RETH_CHAIN to be set" 1>&2
     exit 1
 fi
 
 # Add Flashblocks support for base mode
-if [[ "$NODE_TYPE" == "base" && -n "$RETH_FB_WEBSOCKET_URL" ]]; then
+if [[ "$NODE_TYPE" == "base" && -n "${RETH_FB_WEBSOCKET_URL:-}" ]]; then
     ADDITIONAL_ARGS="--websocket-url=$RETH_FB_WEBSOCKET_URL"
     echo "Enabling Flashblocks support with endpoint: $RETH_FB_WEBSOCKET_URL"
 fi
@@ -28,14 +28,14 @@ if [[ "$NODE_TYPE" == "base" ]]; then
     echo "Starting Base Reth node"
     BINARY="./base-reth-node"
 else
-    echo "Starting vanilla Reth node"
+    echo "Starting OP Reth node"
     BINARY="./op-reth"
 fi
 
-mkdir -p $RETH_DATA_DIR
+mkdir -p "$RETH_DATA_DIR"
 echo "$OP_NODE_L2_ENGINE_AUTH_RAW" > "$OP_NODE_L2_ENGINE_AUTH"
 
-exec $BINARY node \
+exec "$BINARY" node \
   -vvv \
   --datadir="$RETH_DATA_DIR" \
   --full \
@@ -57,7 +57,7 @@ exec $BINARY node \
   --metrics=0.0.0.0:"$METRICS_PORT" \
   --max-outbound-peers=30 \
   --chain "$RETH_CHAIN" \
-  --rollup.sequencer-http=$RETH_SEQUENCER_HTTP \
+  --rollup.sequencer-http="$RETH_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
   --rollup.discovery.v4 \
   --discovery.port="$DISCOVERY_PORT" \
