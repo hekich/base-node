@@ -1,7 +1,7 @@
 {
 	  "base_reth_node": {
-	  	  "tag": "v0.4.1",
-	  	  "commit": "5e5260c26a1d1af7a74a79a692a56b5d73d5363b",
+	  	  "tag": "v0.5.1",
+	  	  "commit": "6e54e8cbcbd27cb86bde54d3a5b0e9b4e9ea960a",
 	  	  "owner": "base",
 	  	  "repo": "base",
 	  	  "tracking": "release"
