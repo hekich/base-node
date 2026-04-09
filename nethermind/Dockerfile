@@ -25,7 +25,7 @@ COPY versions.env /tmp/versions.env
 RUN . /tmp/versions.env && git clone $NETHERMIND_REPO --branch $NETHERMIND_TAG --single-branch . && \
     git switch -c $NETHERMIND_TAG && \
     bash -c '[ "$(git rev-parse HEAD)" = "$NETHERMIND_COMMIT" ]'
-    
+
 RUN TARGETARCH=${TARGETARCH#linux/} && \
     arch=$([ "$TARGETARCH" = "amd64" ] && echo "x64" || echo "$TARGETARCH") && \
     echo "Using architecture: $arch" && \
@@ -46,5 +46,6 @@ COPY --from=op /app/op-node/bin/op-node ./
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY nethermind/nethermind-entrypoint ./execution-entrypoint
 COPY op-node-entrypoint .
+COPY consensus-entrypoint .
 
 CMD ["/usr/bin/supervisord"]
